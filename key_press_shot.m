@@ -6,7 +6,7 @@ disp('Press i for initialization');
 disp('Please select the frame press space : )');
 disp('----------------------------')
 
-global vidObj imgIdx idx currDir fileTitle;
+global vidObj imgIdx idx currDir fileTitle iter;
 key = get(ObjH, 'CurrentCharacter');
 switch key
     case 'i'
@@ -61,6 +61,10 @@ switch key
         imshow(img)
         text(0, size(img,1) - 80,['#' num2str(imgIdx)], 'FontSize', 20);
 
+    case char(27)
+        iter = iter + 1;
+        return;
+        
     otherwise
         disp(double(key));
 end

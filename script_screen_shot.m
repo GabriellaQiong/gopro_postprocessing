@@ -10,7 +10,7 @@ clc;
 %% Parameters
 cams     = 1 : 10;                    % Cameras in the array
 verbose  = false;                     % Whether to show the details
-global vidObj imgIdx idx currDir fileTitle;
+global vidObj imgIdx idx currDir fileTitle iter
 
 %% Path
 scriptDir = fileparts(mfilename('fullpath'));
@@ -23,15 +23,23 @@ if ~exist(outputDir, 'dir')
 end
 addpath(genpath(scriptDir));
 
-%% Extract Frame
-for i = 1 : 1%numel(cams)
+%% Extract Frame 
+fig  = figure;
+iter = 1; 
+while true
+    flag   = iter;
     imgIdx = 1;
     idx    = 1;
-    fileTitle = sprintf('camera%02d', i); 
+    fileTitle = sprintf('camera%02d', iter); 
     currDir = fullfile(outputDir, fileTitle);
     if ~exist(currDir, 'dir')
         mkdir(currDir);
     end
-    vidObj  = VideoReader(fullfile(dataDir, [fileTitle, '_001.MP4']));
-    figure('KeyPressFcn', @key_press_shot,'units','normalized','outerposition',[0 .4 .6 .6]);
+%     vidObj  =   VideoReader(fullfile(dataDir, [fileTitle, '_001.MP4']));
+    set(fig, 'KeyPressFcn', @key_press_shot);
+    pause;
+    
+    if iter > 2%numel(cams)
+        break;
+    end
 end
