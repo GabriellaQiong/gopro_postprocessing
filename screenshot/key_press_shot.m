@@ -1,15 +1,20 @@
 function key_press_shot(ObjH, EventData)
 % KEY_PRESS_SHOT() takes shots for the selected frame in videoreader object
 
-disp('----------------------------');
-disp('Press i for initialization');
-disp('Please select the frame press space : )');
-disp('----------------------------')
-
-global vidObj imgIdx idx currDir fileTitle iter;
+global vidObj imgIdx idx dataDir camIdx;
+outputDir = fullfile(dataDir, '/images/');
+if ~exist(outputDir, 'dir')
+    mkdir(outputDir); 
+end
+fileTitle = sprintf('camera%02d', camIdx);
+currDir = fullfile(outputDir, fileTitle);
+if ~exist(currDir, 'dir')
+    mkdir(currDir);
+end
 key = get(ObjH, 'CurrentCharacter');
 switch key
     case 'i'
+        vidObj  =   VideoReader(fullfile(dataDir, '/videos/', [fileTitle, '_001.MP4']));
         img = read(vidObj, 1);
         imshow(img);
         
@@ -62,11 +67,28 @@ switch key
         text(0, size(img,1) - 80,['#' num2str(imgIdx)], 'FontSize', 20);
 
     case char(27)
-        iter = iter + 1;
-        return;
+        camIdx = camIdx + 1;
+        imgIdx = 1;
+        idx    = 1;
+        fileTitle = sprintf('camera%02d', camIdx);
+        currDir = fullfile(outputDir, fileTitle);
+        if ~exist(currDir, 'dir')
+            mkdir(currDir);
+        end
+        disp('**************************');
+        disp('Please re-initialize by pressing i');
+        disp('**************************');
         
     otherwise
         disp(double(key));
 end
+
+assert(camIdx <= 10, 'There are only ten cameras, please check your indexvideo reader cannot read files!');
+
+disp('----------------------------')
+fprintf('Camera # %02d Actural Frame # %05d Recorded Frame # %05d \n', camIdx, imgIdx, idx);
+disp('----------------------------')
+disp('Please select the frame press space : )');
+disp('----------------------------')
 
 end
