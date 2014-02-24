@@ -31,7 +31,7 @@ for camIdx = 1 : numCams
     imgName(ismember(imgName,{'.','..'})) = [];
     numImgs = length(imgName);
     for imgIdx = 1 : numImgs
-        printf('Processing camera #%d frame #%d ...\n', camIdx, imgIdx);
-        movefile(fullfile(camDir, char(imgName(imgIdx))), fullfile(camDir, sprintf('camera%02d_%05d.bmp', camIdx, imgIdx)));
+        fprintf('Processing camera #%d frame #%d ...\n', camIdx, imgIdx);
+        movefile(fullfile(camDir, char(imgName(imgIdx))), fullfile(camDir, sprintf('camera%02d_%05d.jpg', camIdx, imgIdx)));
     end
 end
