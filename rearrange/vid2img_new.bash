@@ -12,7 +12,7 @@ export SORT=0                           # Whether to sort files
 export VID_NUM=29                       # Number of videos in each folder
 
 # Video Extraction Prameters
-export EXTRACT=1                        # Whether to extract images
+export EXTRACT=0                        # Whether to extract images
 export RATE=1                           # Sample fps
 export DURATION=225                     # Sample length
 export N=9                              # Number of cameras
@@ -75,14 +75,18 @@ then
     done
 fi
 
-:<< '--COMMENT--'
-mkdir $GOPRO_PATH/raw
+# mkdir $GOPRO_PATH/raw
 for ((n=1;n<=$N;++n))
 do 
+    if [ $n -eq 8 ]
+    then
+        continue
+    fi
     m=$(printf "%02d" $n)
-    cp $GOPRO_PATH/camera$m/images_raw$m/*.$EXTENSION $GOPRO_PATH/raw/
+    cp $GOPRO_PATH/images/camera$m/*.$EXTENSION $GOPRO_PATH/raw/
 done
 
+:<< '--COMMENT--'
 rm -rf $GOPRO_PATH/raw_keyframes
 mkdir $GOPRO_PATH/raw_keyframes
 while read line
