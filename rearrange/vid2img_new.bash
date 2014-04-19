@@ -13,7 +13,7 @@ export VID_NUM=29                       # Number of videos in each folder
 
 # Video Extraction Prameters
 export EXTRACT=1                        # Whether to extract images
-export RATE=15                          # Sample fps
+export RATE=1                           # Sample fps
 export DURATION=225                     # Sample length
 export N=9                              # Number of cameras
 export EXTENSION=png                    # File extension format of extraction images
@@ -60,17 +60,18 @@ fi
 # Extract images from video for rectification
 if [ "$EXTRACT" = 1 ]
 then
-    rm -rf $GOPRO_PATH/images_raw
-    mkdir $GOPRO_PATH/images_raw
+#    rm -rf $GOPRO_PATH/images_raw
+    mkdir $GOPRO_PATH/images
     for ((n=1;n<=$N;++n)) 
     do
         if [ $n -eq 8 ]
         then
-        m=$(printf "%02d" $n)
-        rm -rf $GOPRO_PATH/images_raw/camera$m
-        mkdir $GOPRO_PATH/images_raw/camera$m
-        ffmpeg -i "$GOPRO_PATH/video_raw/video_$m.MP4" -f image2 -t $DURATION -r $RATE "$GOPRO_PATH/images_raw/camera$m/camera$m""_%5d.$EXTENSION"
+            continue
         fi
+        m=$(printf "%02d" $n)
+        rm -rf $GOPRO_PATH/images/camera$m
+        mkdir $GOPRO_PATH/images/camera$m
+        ffmpeg -i "$GOPRO_PATH/video_raw/video_$m.MP4" -f image2 -t $DURATION -r $RATE "$GOPRO_PATH/images/camera$m/camera$m""_%5d.$EXTENSION"
     done
 fi
 
